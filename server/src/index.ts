@@ -22,11 +22,12 @@ const main = async () => {
   const redisClient = redis.createClient({ legacyMode: true })
   redisClient.connect()
 
+ 
   app.set('trust proxy', 1)
   app.use(
     cors({
       credentials: true,
-      origin: ['https://studio.apollographql.com', 'http://localhost:3000'],
+      origin:['https://studio.apollographql.com','http://localhost:3000']
     })
   )
 
@@ -42,12 +43,13 @@ const main = async () => {
       }),
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
-        httpOnly: true,
-        sameSite: 'none',
-        secure: true,
+        httpOnly: false,
+        sameSite: 'lax',
+        secure: false,
       },
     })
   )
+
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
       resolvers: [HelloResolver, PostResolver, UserResolver],

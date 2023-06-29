@@ -7,10 +7,12 @@ import InputField from '../components/inputField';
 import { useMutation } from 'urql';
 import { RegisterDocument } from '../gql/graphql';
 import { toErrorMap } from '../util/toErrorMap';
+import { useRouter } from 'next/router';
 
 interface registerProps {}
 
 const Register: React.FC<registerProps> = () => {
+  const router = useRouter()
   const [, register] = useMutation(RegisterDocument);
   return (
     <Wrapper variant='small'>
@@ -20,6 +22,8 @@ const Register: React.FC<registerProps> = () => {
           const response = await register(values);
           if (response.data?.register.errors) {
             setErrors(toErrorMap(response.data.register.errors));
+          }else if(response.data?.register.user){
+            router.push('/')
           }
         }}
       >

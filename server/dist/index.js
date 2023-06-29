@@ -48,7 +48,7 @@ const main = async () => {
     app.set('trust proxy', 1);
     app.use((0, cors_1.default)({
         credentials: true,
-        origin: ['https://studio.apollographql.com', 'http://localhost:3000'],
+        origin: ['https://studio.apollographql.com', 'http://localhost:3000']
     }));
     app.use((0, express_session_1.default)({
         name: 'qid',
@@ -61,9 +61,9 @@ const main = async () => {
         }),
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
-            httpOnly: true,
-            sameSite: 'none',
-            secure: true,
+            httpOnly: false,
+            sameSite: 'lax',
+            secure: false,
         },
     }));
     const apolloServer = new apollo_server_express_1.ApolloServer({
