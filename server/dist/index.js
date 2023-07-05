@@ -27,6 +27,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
+const constants_1 = require("././constants");
 const core_1 = require("@mikro-orm/core");
 const mikro_orm_config_1 = __importDefault(require("./mikro-orm.config"));
 const express_1 = __importDefault(require("express"));
@@ -51,7 +52,7 @@ const main = async () => {
         origin: ['https://studio.apollographql.com', 'http://localhost:3000']
     }));
     app.use((0, express_session_1.default)({
-        name: 'qid',
+        name: constants_1.COOKIE_NAME,
         saveUninitialized: false,
         secret: 'randomtext',
         resave: false,
@@ -63,7 +64,7 @@ const main = async () => {
             maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
             httpOnly: true,
             sameSite: 'lax',
-            secure: false,
+            secure: constants_1.__prod__,
         },
     }));
     const apolloServer = new apollo_server_express_1.ApolloServer({
@@ -79,7 +80,7 @@ const main = async () => {
         cors: false,
     });
     app.listen(4000, () => {
-        console.log('server started');
+        console.log('server started at 3000');
     });
 };
 main();

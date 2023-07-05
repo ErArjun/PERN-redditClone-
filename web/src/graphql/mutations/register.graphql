@@ -6,7 +6,8 @@ mutation Register($username:String!,$password:String!){
     }
 
     user {
-      ...RegularUser
+      id
+      username
     }
   }
 }

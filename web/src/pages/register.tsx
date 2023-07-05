@@ -8,6 +8,8 @@ import { useMutation } from 'urql';
 import { RegisterDocument } from '../gql/graphql';
 import { toErrorMap } from '../util/toErrorMap';
 import { useRouter } from 'next/router';
+import { withUrqlClient } from 'next-urql';
+import { createUrqlClient } from '../util/createUrqlClient';
 
 interface registerProps {}
 
@@ -58,4 +60,4 @@ const Register: React.FC<registerProps> = () => {
   );
 };
 
-export default Register;
+export default withUrqlClient(createUrqlClient)(Register);

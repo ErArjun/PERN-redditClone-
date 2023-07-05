@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import { __prod__ } from '././constants'
+import { COOKIE_NAME, __prod__ } from '././constants'
 import { MikroORM } from '@mikro-orm/core'
 import mikroConfig from './mikro-orm.config'
 import express from 'express'
@@ -33,7 +33,7 @@ const main = async () => {
 
   app.use(
     session({
-      name: 'qid',
+      name: COOKIE_NAME,
       saveUninitialized: false,
       secret: 'randomtext',
       resave: false,
@@ -44,8 +44,8 @@ const main = async () => {
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
         httpOnly: true,
-        sameSite: 'lax',
-        secure: false,
+        sameSite: 'lax',   //csrf
+        secure: __prod__, //secure true means cookies only work in https
       },
     })
   )
@@ -64,7 +64,7 @@ const main = async () => {
     cors: false,
   })
   app.listen(4000, () => {
-    console.log('server started')
+    console.log('server started at 3000')
   })
 }
 
