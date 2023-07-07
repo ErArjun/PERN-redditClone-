@@ -5,8 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 const constants_1 = require("././constants");
-const core_1 = require("@mikro-orm/core");
-const mikro_orm_config_1 = __importDefault(require("./mikro-orm.config"));
 const express_1 = __importDefault(require("express"));
 const apollo_server_express_1 = require("apollo-server-express");
 const type_graphql_1 = require("type-graphql");
@@ -16,9 +14,10 @@ const user_1 = require("./resolvers/user");
 const express_session_1 = __importDefault(require("express-session"));
 const ioredis_1 = require("ioredis");
 const cors_1 = __importDefault(require("cors"));
+const dataSource_1 = require("./config/dataSource");
 const main = async () => {
-    const orm = await core_1.MikroORM.init(mikro_orm_config_1.default);
-    await orm.getMigrator().up();
+    await dataSource_1.dataSource.initialize();
+    await dataSource_1.dataSource.runMigrations();
     const app = (0, express_1.default)();
     const RedisStore = require('connect-redis')(express_session_1.default);
     const redis = new ioredis_1.Redis();
@@ -48,7 +47,7 @@ const main = async () => {
             resolvers: [hello_1.HelloResolver, post_1.PostResolver, user_1.UserResolver],
             validate: false,
         }),
-        context: ({ req, res }) => ({ em: orm.em, req, res, redis }),
+        context: ({ req, res }) => ({ req, res, redis }),
     });
     await apolloServer.start();
     apolloServer.applyMiddleware({

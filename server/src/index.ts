@@ -1,7 +1,5 @@
 import 'reflect-metadata'
 import { COOKIE_NAME, __prod__ } from '././constants'
-import { MikroORM } from '@mikro-orm/core'
-import mikroConfig from './mikro-orm.config'
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import { buildSchema } from 'type-graphql'
@@ -12,10 +10,15 @@ import session from 'express-session'
 import {Redis} from 'ioredis'
 import { MyContext } from './types'
 import cors from 'cors'
+import { dataSource } from './config/dataSource'
+
 
 const main = async () => {
-  const orm = await MikroORM.init(mikroConfig)
-  await orm.getMigrator().up()
+  await dataSource.initialize();
+
+  await dataSource.runMigrations();
+
+
   const app = express()
 
   const RedisStore = require('connect-redis')(session)
@@ -53,7 +56,7 @@ const main = async () => {
       resolvers: [HelloResolver, PostResolver, UserResolver],
       validate: false,
     }),
-    context: ({ req, res }): MyContext => ({ em: orm.em, req, res,redis}),
+    context: ({ req, res }): MyContext => ({req, res,redis}),
   })
 
   await apolloServer.start()
