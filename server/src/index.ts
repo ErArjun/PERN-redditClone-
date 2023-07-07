@@ -9,7 +9,7 @@ import { HelloResolver } from './resolvers/hello'
 import { PostResolver } from './resolvers/post'
 import { UserResolver } from './resolvers/user'
 import session from 'express-session'
-import * as redis from 'redis'
+import {Redis} from 'ioredis'
 import { MyContext } from './types'
 import cors from 'cors'
 
@@ -19,9 +19,7 @@ const main = async () => {
   const app = express()
 
   const RedisStore = require('connect-redis')(session)
-  const redisClient = redis.createClient({ legacyMode: true })
-  redisClient.connect()
-
+  const redis = new Redis()
  
   app.set('trust proxy', 1)
   app.use(
@@ -38,7 +36,7 @@ const main = async () => {
       secret: 'randomtext',
       resave: false,
       store: new RedisStore({
-        client: redisClient,
+        client: redis,
         disableTouch: true,
       }),
       cookie: {
@@ -55,7 +53,7 @@ const main = async () => {
       resolvers: [HelloResolver, PostResolver, UserResolver],
       validate: false,
     }),
-    context: ({ req, res }): MyContext => ({ em: orm.em, req, res }),
+    context: ({ req, res }): MyContext => ({ em: orm.em, req, res,redis}),
   })
 
   await apolloServer.start()
