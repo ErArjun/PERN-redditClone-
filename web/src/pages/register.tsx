@@ -32,14 +32,12 @@ const Register: React.FC<registerProps> = () => {
         {({ isSubmitting }) => (
           <Form>
             <InputField
-              type='text'
               name='username'
               label='username'
               placeholder='username'
             />
             <Box mt='4'>
               <InputField
-                type='text'
                 name='email'
                 label='email'
                 placeholder='email'

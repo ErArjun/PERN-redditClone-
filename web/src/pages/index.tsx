@@ -3,17 +3,21 @@ import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../util/createUrqlClient";
 import {useQuery } from "urql";
 import { PostsDocument } from "../gql/graphql";
-
+import { Layout } from "../components/layout";
+import NextLink from 'next/link'
+import { Link } from "@chakra-ui/react";
 const Index = () => {
     const [{data}]=useQuery({
-        query:PostsDocument
+        query:PostsDocument,
+        variables:{limit:6}
     })
 return(
-<>
-<NavBar/>
-<div>hello world</div>
+<Layout>
+    <NextLink href="/create-post">
+    <Link>create post</Link>
+    </NextLink>
 {!data ? null : data.posts.map((p)=><div key={p.id}>{p.title}</div>)}
-</>
+</Layout>
 )
 }
 

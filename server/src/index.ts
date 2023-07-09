@@ -14,10 +14,10 @@ import { dataSource } from './config/dataSource'
 
 
 const main = async () => {
+
   await dataSource.initialize();
-
-  await dataSource.runMigrations();
-
+  
+ // await dataSource.runMigrations();
 
   const app = express()
 
@@ -46,7 +46,7 @@ const main = async () => {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
         httpOnly: true,
         sameSite: 'lax',   //csrf
-        secure: __prod__, //secure true means cookies only work in https
+        secure:__prod__, //secure true means cookies only work in https
       },
     })
   )
