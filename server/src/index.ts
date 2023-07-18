@@ -16,8 +16,8 @@ import { dataSource } from './config/dataSource'
 const main = async () => {
 
   await dataSource.initialize();
-  
- // await dataSource.runMigrations();
+  //await Post.delete({})
+  //await dataSource.runMigrations();
 
   const app = express()
 

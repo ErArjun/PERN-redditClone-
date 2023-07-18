@@ -6,7 +6,7 @@ interface WrapperProps {
   variant?: WrapperVariant
   children: React.ReactNode
 }
-const Wrapper: React.FC<WrapperProps> = ({ children, variant }) => {
+const Wrapper: React.FC<WrapperProps> = ({ children, variant='regular' }) => {
   return (
     <Box
       mt={8}
